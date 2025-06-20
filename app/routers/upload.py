@@ -5,7 +5,8 @@ import shutil
 
 router = APIRouter()
 
-UPLOAD_DIR = os.path.join("./data","uploads")
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+UPLOAD_DIR = os.path.join(BASE_DIR, "..", "data", "uploads")
 os.makedirs(UPLOAD_DIR, exist_ok=True)
 
 @router.post("/upload/files", response_class=HTMLResponse)
