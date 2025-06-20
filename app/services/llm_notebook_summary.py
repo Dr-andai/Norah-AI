@@ -1,17 +1,22 @@
 import nbformat
-import requests
+from app.services.hf_llm_featherless import call_mistral_featherless
+import os
+from dotenv import load_dotenv
+
+load_dotenv()
+HF_TOKEN = os.getenv("HF_TOKEN")
 
 NOTEBOOK_WITH_SOP_PROMPT = """
 You are Norah AI, a smart assistant reviewing a data analysis notebook.
 
 First, here is the SOP context describing how the data was collected and structured:
 """
-# {context_from_sop}
+{context_from_sop}
 """
 
 Now, here is the analysis script:
 """
-# {notebook_text}
+{notebook_text}
 """
 
 Please summarize the following:
@@ -34,15 +39,9 @@ def extract_notebook_text(file_path):
 
     return "\n\n".join(content)
 
-def summarize_notebook_with_llm(notebook_text, sop_context, endpoint_url, hf_token):
+def summarize_notebook_with_llm(notebook_text, sop_context):
     prompt = NOTEBOOK_WITH_SOP_PROMPT.format(
         notebook_text=notebook_text[:3000],
         context_from_sop=sop_context[:1000]
     )
-    response = requests.post(
-        endpoint_url,
-        headers={"Authorization": f"Bearer {hf_token}"},
-        json={"inputs": prompt}
-    )
-    response.raise_for_status()
-    return response.json()[0].get("generated_text", "")
+    return call_mistral_featherless(prompt, HF_TOKEN)

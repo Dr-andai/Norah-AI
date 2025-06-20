@@ -1,6 +1,11 @@
 import pdfplumber
 from docx import Document
-import requests
+from app.services.hf_llm_featherless import call_mistral_featherless
+import os
+from dotenv import load_dotenv
+
+load_dotenv()
+HF_TOKEN = os.getenv("HF_TOKEN")
 
 PROMPT_TEMPLATE = """
 You are an assistant helping summarize research protocols or SOPs for mental health projects.
@@ -17,26 +22,20 @@ Extract and structure the following from the document:
 
 Here is the document content:
 """
-# {document_text}
+{document_text}
 """
 
 Return your output in clear bullet format.
 """
 
 def extract_text_from_pdf(file_path):
-    with pdfplplumber.open(file_path) as pdf:
+    with pdfplumber.open(file_path) as pdf:
         return "\n".join([p.extract_text() for p in pdf.pages if p.extract_text()])
 
 def extract_text_from_docx(file_path):
     doc = Document(file_path)
     return "\n".join([p.text for p in doc.paragraphs if p.text.strip()])
 
-def query_llm(document_text: str, endpoint_url: str, hf_token: str):
+def query_llm(document_text: str):
     prompt = PROMPT_TEMPLATE.format(document_text=document_text[:4000])
-    response = requests.post(
-        endpoint_url,
-        headers={"Authorization": f"Bearer {hf_token}"},
-        json={"inputs": prompt}
-    )
-    response.raise_for_status()
-    return response.json()[0].get("generated_text", "")
+    return call_mistral_featherless(prompt, HF_TOKEN)
