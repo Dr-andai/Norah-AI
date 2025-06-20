@@ -1,4 +1,4 @@
-from fastapi import APIRouter, UploadFle, File
+from fastapi import APIRouter, UploadFile, File
 from fastapi.responses import HTMLResponse
 import os
 import shutil
@@ -10,9 +10,9 @@ os.makedirs(UPLOAD_DIR, exist_ok=True)
 
 @router.post("/upload/files", response_class=HTMLResponse)
 async def upload_files(
-    notebook: UploadFle = File(...),
-    protocol: UploadFle = File(...),
-    sop: UploadFle = File(...)
+    notebook: UploadFile = File(...),
+    protocol: UploadFile = File(...),
+    sop: UploadFile = File(...)
 ):
     uploads = {
         "notebook":notebook,
