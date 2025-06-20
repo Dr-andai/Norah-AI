@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>🧠 Norah AI — Project Dashboard</title>
+  <script src="https://unpkg.com/htmx.org@1.9.2"></script>
+  <style>
+    body { font-family: sans-serif; padding: 2em; background-color: #f9f9f9; }
+    .card { border: 1px solid #ccc; padding: 1em; margin-bottom: 1em; border-radius: 10px; background: #fff; }
+    .upload-form { border: 2px dashed #aaa; padding: 1em; background: #fff; border-radius: 10px; }
+    h1, h2 { color: #333; }
+    label { display: block; margin-top: 1em; font-weight: bold; }
+    input[type="file"] { margin-top: 0.5em; }
+    button { margin-top: 1em; padding: 0.5em 1em; }
+  </style>
+</head>
+<body>
+
+  <h1>🧠 Norah AI — Project Dashboard</h1>
+
+  <section id="project-status">
+    {% for project in projects %}
+      <div class="card">
+        <h3>{{ project.name }}</h3>
+        <p><strong>Status:</strong> {{ project.status }}</p>
+        <p><strong>Progress:</strong> {{ project.progress }}</p>
+        <button 
+          hx-get="/sync/{{ project.repo }}" 
+          hx-target="#project-status" 
+          hx-swap="outerHTML">🔄 Refresh</button>
+      </div>
+    {% endfor %}
+  </section>
+
+  <hr>
+
+  <h2>📤 Upload Analysis Files</h2>
+
+  <form 
+    class="upload-form"
+    hx-post="/upload/files"
+    hx-encoding="multipart/form-data"
+    hx-target="#upload-status">
+    
+    <label>📓 Notebook (.ipynb or .R)</label>
+    <input type="file" name="notebook" accept=".ipynb,.R">
+
+    <label>📄 Study Protocol (.pdf or .docx)</label>
+    <input type="file" name="protocol" accept=".pdf,.doc,.docx">
+
+    <label>✅ SOP Checklist (.pdf or .xlsx)</label>
+    <input type="file" name="sop" accept=".pdf,.doc,.xlsx">
+
+    <button type="submit">Upload</button>
+  </form>
+
+  <div id="upload-status" style="margin-top: 1em;"></div>
+
+</body>
+</html>
