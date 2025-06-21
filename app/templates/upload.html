@@ -1,7 +1,15 @@
+<link rel="stylesheet" href="/static/style.css">
 <h2>Data Scientist Upload</h2>
-<form action="/upload/files" method="post" enctype="multipart/form-data">
+{% if message %}<p id="upload-status">{{ message }}</p>{% endif %}
+<form action="/upload/files" method="post" enctype="multipart/form-data" class="upload-form">
+  <label>Notebook (.ipynb or .R)</label>
   <input type="file" name="notebook">
+
+  <label>Study Protocol (.pdf or .docx)</label>
   <input type="file" name="protocol">
+
+  <label>SOP Checklist (.pdf or .xlsx)</label>
   <input type="file" name="sop">
+
   <button type="submit">Upload</button>
 </form>

@@ -1,0 +1,65 @@
+body {
+  font-family: sans-serif;
+  background: #f0f4f8;
+  padding: 3em;
+  text-align: center;
+}
+
+h1, h2 {
+  color: #222;
+}
+
+p {
+  font-size: 1.2em;
+  color: #555;
+}
+
+a.button, button {
+  display: inline-block;
+  margin: 1em;
+  padding: 1em 2em;
+  background: #007bff;
+  color: white;
+  text-decoration: none;
+  border-radius: 10px;
+  font-weight: bold;
+  border: none;
+  cursor: pointer;
+}
+
+a.button:hover, button:hover {
+  background: #0056b3;
+}
+
+.card {
+  border: 1px solid #ccc;
+  padding: 1em;
+  margin-bottom: 1em;
+  border-radius: 10px;
+  background: #fff;
+  text-align: left;
+}
+
+.upload-form {
+  border: 2px dashed #aaa;
+  padding: 1em;
+  background: #fff;
+  border-radius: 10px;
+  margin-top: 2em;
+}
+
+label {
+  display: block;
+  margin-top: 1em;
+  font-weight: bold;
+  text-align: left;
+}
+
+input[type="file"] {
+  margin-top: 0.5em;
+}
+
+#upload-status {
+  margin-top: 1em;
+  color: green;
+}
