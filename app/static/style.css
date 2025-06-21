@@ -63,3 +63,40 @@ input[type="file"] {
   margin-top: 1em;
   color: green;
 }
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 1em;
+  font-size: 0.95em;
+}
+
+th, td {
+  border: 1px solid #ccc;
+  padding: 0.6em;
+  text-align: left;
+}
+
+th {
+  background-color: #f0f0f0;
+  color: #333;
+}
+
+tr:nth-child(even) {
+  background-color: #f9f9f9;
+}
+
+a {
+  color: #0066cc;
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+.summary-block {
+  background-color: #f0f9ff;
+  border-left: 4px solid #007acc;
+  padding: 1em;
+  margin-top: 0.5em;
+  border-radius: 8px;
+}
