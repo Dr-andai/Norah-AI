@@ -7,7 +7,7 @@ router = APIRouter()
 templates = Jinja2Templates(directory="app/templates")
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-UPLOAD_DIR = os.path.join(os.getcwd(), "uploads")
+UPLOAD_DIR = os.path.join(os.getcwd(), "app/uploads")
 
 os.makedirs(UPLOAD_DIR, exist_ok=True)
 
