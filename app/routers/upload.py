@@ -1,32 +1,42 @@
-from fastapi import APIRouter, UploadFile, File
+from fastapi import APIRouter, Request, UploadFile, File
 from fastapi.responses import HTMLResponse
-import os
-import shutil
+from fastapi.templating import Jinja2Templates
+import os, shutil, json
 
 router = APIRouter()
+templates = Jinja2Templates(directory="app/templates")
 
-# BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-# UPLOAD_DIR = os.path.join(BASE_DIR, "..", "data", "uploads")
-# os.makedirs(UPLOAD_DIR, exist_ok=True)
-
-UPLOAD_DIR = os.path.join("/tmp", "uploads")
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+UPLOAD_DIR = os.path.abspath(os.path.join(BASE_DIR, "../uploads"))
 os.makedirs(UPLOAD_DIR, exist_ok=True)
 
+
 @router.post("/upload/files", response_class=HTMLResponse)
-async def upload_files(
+async def handle_upload(
+    request: Request,
     notebook: UploadFile = File(...),
     protocol: UploadFile = File(...),
     sop: UploadFile = File(...)
 ):
-    uploads = {
-        "notebook":notebook,
-        "protocol":protocol,
-        "sop":sop
-    }
-
-    for label, file in uploads.items():
-        file_path = os.path.join(UPLOAD_DIR, f"{label}_{file.filename}")
-        with open(file_path, 'wb') as buffer:
+    for file in [notebook, protocol, sop]:
+        dest_path = os.path.join(UPLOAD_DIR, file.filename)
+        with open(dest_path, "wb") as buffer:
             shutil.copyfileobj(file.file, buffer)
-    
-    return "<p>✅ Files uploaded successfully. You can now run Norah's analysis.</p>"
+
+    return templates.TemplateResponse("upload.html", {
+        "request": request,
+        "message": "✅ Files uploaded successfully."
+    })
+
+@router.get("/ds-dashboard", response_class=HTMLResponse)
+def ds_dashboard(request: Request):
+    try:
+        project_data = json.load(open("data/mock_project_meta.json"))
+    except Exception:
+        project_data = []
+
+    return templates.TemplateResponse("dashboard.html", {
+        "request": request,
+        "projects": project_data,
+        "role": "ds"
+    })

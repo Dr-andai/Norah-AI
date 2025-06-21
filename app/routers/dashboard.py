@@ -6,10 +6,15 @@ import json
 router = APIRouter()
 templates = Jinja2Templates(directory="app/templates")
 
-@router.get("/", response_class=HTMLResponse)
-def read_dashboard(request: Request):
-    project_data = json.load(open("data/mock_project_meta.json"))
+@router.get("/pm-dashboard", response_class=HTMLResponse)
+def pm_dashboard(request: Request):
+    try:
+        project_data = json.load(open("data/mock_project_meta.json"))
+    except Exception:
+        project_data = []
+
     return templates.TemplateResponse("dashboard.html", {
         "request": request,
-        "projects": project_data
+        "projects": project_data,
+        "role": "pm"
     })

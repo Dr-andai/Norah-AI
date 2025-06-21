@@ -31,8 +31,8 @@
     {% endfor %}
   </section>
 
+  {% if role == 'ds' %}
   <hr>
-
   <h2>📤 Upload Analysis Files</h2>
 
   <form 
@@ -54,6 +54,7 @@
   </form>
 
   <div id="upload-status" style="margin-top: 1em;"></div>
+  {% endif %}
 
 </body>
 </html>
