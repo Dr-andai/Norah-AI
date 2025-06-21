@@ -30,3 +30,12 @@ def fetch_all_uploads():
     rows = cursor.fetchall()
     conn.close()
     return rows
+
+def delete_upload_record(filename):
+    conn = sqlite3.connect(DB_PATH)
+    cursor = conn.cursor()
+    cursor.execute("DELETE FROM uploads WHERE filename = ?", (filename,))
+    conn.commit()
+    conn.close()
+
+

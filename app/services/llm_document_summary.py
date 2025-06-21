@@ -10,7 +10,9 @@ HF_TOKEN = os.getenv("HF_TOKEN")
 PROMPT_TEMPLATE = """
 You are an assistant helping summarize research protocols or SOPs for mental health projects.
 
-Extract and structure the following from the document:
+Start with a brief 20-word summary of the protocol’s purpose.
+
+Then extract and structure the following:
 
 1. Title
 2. Objective
@@ -21,9 +23,7 @@ Extract and structure the following from the document:
 7. Checklist Items mentioned (if it's an SOP)
 
 Here is the document content:
-"""
 {document_text}
-"""
 
 Return your output in clear bullet format.
 """

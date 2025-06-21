@@ -93,3 +93,10 @@ a {
 a:hover {
   text-decoration: underline;
 }
+.summary-block {
+  background-color: #f0f9ff;
+  border-left: 4px solid #007acc;
+  padding: 1em;
+  margin-top: 0.5em;
+  border-radius: 8px;
+}

@@ -1,21 +1,13 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>🧠 Norah AI — Project Dashboard</title>
+  <title>💡 Norah AI — Project Dashboard</title>
   <script src="https://unpkg.com/htmx.org@1.9.2"></script>
-  <style>
-    body { font-family: sans-serif; padding: 2em; background-color: #f9f9f9; }
-    .card { border: 1px solid #ccc; padding: 1em; margin-bottom: 1em; border-radius: 10px; background: #fff; }
-    .upload-form { border: 2px dashed #aaa; padding: 1em; background: #fff; border-radius: 10px; }
-    h1, h2 { color: #333; }
-    label { display: block; margin-top: 1em; font-weight: bold; }
-    input[type="file"] { margin-top: 0.5em; }
-    button { margin-top: 1em; padding: 0.5em 1em; }
-  </style>
+  <link rel="stylesheet" href="/static/style.css">
 </head>
 <body>
 
-  <h1>🧠 Norah AI — Project Dashboard</h1>
+  <h1>💡 Norah AI — Project Dashboard</h1>
 
   <section id="project-status">
     {% for project in projects %}
@@ -26,14 +18,14 @@
         <button 
           hx-get="/sync/{{ project.repo }}" 
           hx-target="#project-status" 
-          hx-swap="outerHTML">🔄 Refresh</button>
+          hx-swap="outerHTML"> 🔄 Refresh</button>
       </div>
     {% endfor %}
   </section>
 
   {% if role == 'ds' %}
   <hr>
-  <h2>📤 Upload Analysis Files</h2>
+  <h2>📄 Upload Analysis Files</h2>
 
   <form 
     class="upload-form"
@@ -54,19 +46,36 @@
   </form>
 
   <div id="upload-status" style="margin-top: 1em;"></div>
-   <hr>
-    <h2>📂 Uploaded Files</h2>
-    <table>
-      <tr><th>Filename</th><th>Type</th><th>Uploaded At</th><th>Link</th></tr>
-      {% for file in uploads %}
-        <tr>
-          <td>{{ file[0] }}</td>
-          <td>{{ file[1] }}</td>
-          <td>{{ file[2] }}</td>
-          <td><a href="/uploads/{{ file[0] }}" target="_blank">🔗 Open</a></td>
-        </tr>
-      {% endfor %}
-    </table>
+  <hr>
+  <h2>📂 Uploaded Files</h2>
+  <table>
+    <tr><th>Filename</th><th>Type</th><th>Uploaded At</th><th>Link</th><th>Summary</th><th>Action</th></tr>
+    {% for file in uploads %}
+      <tr>
+        <td>{{ file[0] }}</td>
+        <td>{{ file[1] }}</td>
+        <td>{{ file[2] }}</td>
+        <td><a href="/uploads/{{ file[0] }}" target="_blank">🔗 Open</a></td>
+        <td>
+          {% if file[1] == 'protocol' %}
+          <button 
+            hx-get="/summarize/protocol/{{ file[0] }}"
+            hx-target="#summary-{{ loop.index }}"
+            hx-swap="innerHTML"> 🧠 Summarize</button>
+          <div id="summary-{{ loop.index }}"></div>
+          {% endif %}
+        </td>
+        <td>
+          <form 
+            hx-post="/delete/file/{{ file[0] }}"
+            hx-target="closest tr"
+            hx-swap="outerHTML remove">
+            <button type="submit">🗑️ Delete</button>
+          </form>
+        </td>
+      </tr>
+    {% endfor %}
+  </table>
   {% endif %}
 
 </body>
