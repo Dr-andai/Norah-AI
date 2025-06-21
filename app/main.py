@@ -10,6 +10,10 @@ UPLOAD_DIR = os.path.join(BASE_DIR, "uploads")
 # os.makedirs(UPLOAD_DIR, exist_ok=True)
 
 app = FastAPI()
+
+if os.path.exists(STATIC_DIR):
+    app.mount("/static", StaticFiles(directory=STATIC_DIR), name="static")
+
 # app.mount("/static", StaticFiles(directory=STATIC_DIR), name="static")
 # app.mount("/uploads", StaticFiles(directory=UPLOAD_DIR), name="uploads")
 
